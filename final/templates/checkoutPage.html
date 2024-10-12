@@ -1,0 +1,89 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<head>
+    <link rel='stylesheet' href='../static/style_sheet.css'>
+</head>
+{% block navbar %}
+<nav class = "navbar_navbar-inverse">
+    <div class="navbar_logo_container">
+        <a href="/">
+            <img class = "logo" src="../static/logo.jpg">
+        </a>
+    </div>
+    <div class="back_to_basket_container">
+        <a href="{{ url_for('view_basket') }}">Back to Basket</a>
+    </div>
+</nav>
+{% endblock %}
+
+
+{% block content %}
+    <div class="main_checkout_page_container">
+        <div class="checkout_page_header_container">
+            <img src="../static/checkout.jpg.png" alt="Checkout >:DD">
+        </div>
+        
+        {% if ordered %}
+            <div class="successful_order_message_container">
+                <h1>Your order was successful!</h1>
+                <h2>Your order ID is: <strong>{{ orderID }}</strong></h2>
+            </div>
+        {% else %}
+            <div class="checkout_form">
+                {{ wtf.quick_form(form) }} 
+            </div> 
+
+            <div class="price_detail_container">
+                <h3>SubTotal: £{{ totalPrice }}</h3>
+                <h6>Delivery Fee: £199</h6>
+                <h3>Total: £{{ totalPrice + 199 }}</h3>
+            </div>
+        {% endif %}
+        
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <footer>
+        <div class="footer_main_container">
+            <div class="footer_logo_container">
+                <img src="../static/logo_in_full.jpg.png" alt = "Proformance Enhancement Society">
+            </div>
+
+            <div class="footer_about_the_shop">
+                <h4>About the shop</h4>
+                We aim to maximise your potential growth with a little help
+            </div>
+
+            <div class="quick_links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Products</a></li>
+                    <li><a href="{{ url_for('view_basket') }}">Basket</a></li>
+                </ul>
+            </div>
+
+            <div class="address_details">
+                <h4>Address details: </h4>
+                1234 Wibble Wobble Street, <br>
+                Quirkville, Muddleland 98765,<br>
+                Fluffle County,<br>
+                Whimsyland<br>
+            </div>
+
+            <div class="contact_details">
+                <h4>Contact us at: </h4>
+                DenchMan447@email.com
+            </div>
+
+            <div class="payment_methods">
+                <ul>
+                    <li><img src="../static/apple_pay.jpg"></li>
+                    <li><img src="../static/google_pay.jpg"></li>
+                    <li><img src="../static/visa.jpg"></li>
+                    <li><img src="../static/mastercard.jpg"></li>
+                    <li><img src="../static/amex.jpg"></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+{% endblock %}

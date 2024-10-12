@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+{% import "bootstrap/wtf.html" as wtf %}
+<head>
+    <link rel='stylesheet' href='../static/style_sheet.css'>
+</head>
+<header>
+<div class="header_container">
+    {% block navbar %}
+    <nav class="promotion_nav_container">
+        <div class="dynamic_promo_msg">
+            testing
+        </div>
+    </nav>
+
+    <nav class = "navbar_navbar-inverse">
+            <div class="navbar_logo_container">
+                <a href="/">
+                    <img class = "logo" src="../static/logo.jpg">
+                </a>
+            </div>
+
+            <div class="filter_container">
+                <form action="{{ url_for('index') }}" method="POST">
+                    <select name="filter_select">
+                        <option value="1">A-Z</option>
+                        <option value="2">Z-A</option>
+                        <option value="3">Price: Low to High</option>
+                        <option value="4">Price: High to Low</option>
+                    </select>
+                    <input type="submit" id="filter_submit_button"value="Apply filter">
+                </form>
+            </div>
+
+            {% if current_user.is_authenticated %}
+                <div class="welcome_logged_in_user_msg">
+                    <h5>Welcome, {{ current_user.username }}</h5>
+                </div>
+
+                <div class="signout_button">
+                    <form action="{{url_for('logout') }}">
+                        <input class="sign_out_button" type="submit" value="Log out">
+                    </form>
+                </div>
+            {% else %}
+                <div class="index_page_signup_button">
+                    <form action="{{ url_for('signUp') }}" method="POST">
+                        <input id="index_page_signup_submit" type="submit" value="Sign Up">
+                    </form>
+                </div>
+                <div class="index_page_login_button">
+                    <form action="{{ url_for('login') }}" method="POST">
+                        <input id="index_page_login_submit" type="submit"  value="Log In">
+                    </form>
+                </div>
+
+            {% endif %}
+
+            
+
+
+            <div class="shopping_cart_button_container">
+                <a href="{{ url_for('view_basket') }}">
+                    <img class="shopping_cart_button" src="../static/shopping_cart_button_2.jpg"
+                    alt="file not found">
+                </a>
+            </div>
+
+    </nav>
+    {% endblock %}
+</div>
+</header>
+{% block content %}
+    <div class = "main_container">
+    
+        
+        {% for bike in bikes %}
+            
+                <div class = "individual_product_container">
+
+                    <a class = "individual_product_image" href=" {{ url_for('singleProductPage', bike_id=bike.product_id) }}">
+                        <img src="..\static\{{ bike.imagefilename }} "
+                        alt = "file not found :C" width = 200px height = 250px></a>
+
+                    <div class="product_name_tile">
+                        <a href=" {{ url_for('singleProductPage', bike_id=bike.product_id) }}">{{ bike.name }}</a>
+                    </div>
+
+                    <div class ="product_price_tile">
+                        £{{ bike.price }}
+                    </div>
+
+                    <div class="product_impacts_tile">Environment impacts include: 
+                        {{ bike.enviro_impacts }}
+                    </div>
+                
+                    <form action=" {{ url_for('add_to_basket', bike_id=bike.product_id ) }}">
+                        <input type="hidden" name="prod_id" value=" {{ bike.product_id }}">
+                        <input class = "add_to_basket_submit" type="submit" onclick="alert('Added to cart!')" value="Add to basket">
+                    </form>
+
+                </div>
+            
+        {% endfor %}
+        
+    
+    </div>
+    
+{% endblock %}
+
+{% block footer %}
+    <footer>
+        <div class="footer_main_container">
+            <div class="footer_logo_container">
+                <img src="../static/logo_in_full.jpg.png" alt = "Proformance Enhancement Society">
+            </div>
+
+            <div class="footer_about_the_shop">
+                <h4>About the shop</h4>
+                We aim to maximise your potential growth with a little help
+            </div>
+
+            <div class="quick_links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Products</a></li>
+                    <li><a href="{{ url_for('view_basket') }}">Basket</a></li>
+                </ul>
+            </div>
+
+            <div class="address_details">
+                <h4>Address details: </h4>
+                1234 Wibble Wobble Street, <br>
+                Quirkville, Muddleland 98765,<br>
+                Fluffle County,<br>
+                Whimsyland<br>
+            </div>
+
+            <div class="contact_details">
+                <h4>Contact us at: </h4>
+                DenchMan447@email.com
+            </div>
+
+            <div class="payment_methods">
+                <ul>
+                    <li><img src="../static/apple_pay.jpg"></li>
+                    <li><img src="../static/google_pay.jpg"></li>
+                    <li><img src="../static/visa.jpg"></li>
+                    <li><img src="../static/mastercard.jpg"></li>
+                    <li><img src="../static/amex.jpg"></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+
